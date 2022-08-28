@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 	"wallet-sandbox/db"
 )
 
@@ -99,7 +100,6 @@ func TransferHandler(w http.ResponseWriter, r *http.Request) {
 
 func WithdrawHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	defer r.Body.Close()
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		res, _ := json.Marshal(BadRequest.Error(err.Error()))
@@ -152,4 +152,36 @@ func WithdrawHandler(w http.ResponseWriter, r *http.Request) {
 	
 	res, _ := json.Marshal(SuccessResponse{Message: "Successful withdrawal"})
 	w.Write(res)
+}
+
+func TransactionHistoryHandler(w http.ResponseWriter, r *http.Request) {
+
+	dateStr := r.URL.Query().Get("date")
+
+	if dateStr == "" {
+		res, _ := json.Marshal(BadRequest.Error("No date parameter given."))
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(res)
+		return
+	}
+
+	datetime, err := time.Parse("2006-01-02", dateStr)
+	if err != nil {
+		res, _ := json.Marshal(BadRequest.Error(err.Error()))
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(res)
+		return
+	}
+
+	trnxList, err := db.DAO.GetTransanctionListByDate(globConfig, datetime)
+	if err != nil {
+		res, _ := json.Marshal(ServerError.Error(err.Error()))
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(res)
+		return
+	}
+
+	res, _ := json.Marshal(trnxList)
+	w.Write(res)
+
 }

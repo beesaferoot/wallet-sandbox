@@ -44,8 +44,9 @@ func (trxn *Transaction) UpdateFailure(cxt context.Context) (err error) {
 }
 
 func TransactionsByDate(cxt context.Context, date time.Time) (trnxs []Transaction, err error) {
-	stmt := "SELECT id, type, from_account_id, to_account_id, amount, status, processed_at, created_at FROM wallet_sandbox.transactions WHERE  created_at <= TO_TIMESTAMP($1, 'YYYY-MM-DD HH:MI:SS') ORDER BY created_at DESC"
-	rows, err := DAO.conn.QueryContext(cxt, stmt)
+	trnxs = []Transaction{}
+	stmt := "SELECT id, type, from_account_id, to_account_id, amount, status, processed_at, created_at FROM wallet_sandbox.transactions WHERE  created_at <= TO_TIMESTAMP($1, 'YYYY-MM-DD HH24:MI:SS') ORDER BY created_at DESC"
+	rows, err := DAO.conn.QueryContext(cxt, stmt, date)
 
 	if err != nil {
 		return trnxs, err

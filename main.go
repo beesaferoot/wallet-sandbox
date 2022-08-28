@@ -14,6 +14,8 @@ func main() {
 	mux.POST("/wallet/withdraw", wallet.WithdrawHandler)
 	
 	mux.GET("/account/list", wallet.ListAccountHandler)
+	mux.GET("/wallet/transaction_history", wallet.TransactionHistoryHandler)
+	
 	server := &http.Server{
 		Addr:     "0.0.0.0:8088",
 		Handler: mux,
