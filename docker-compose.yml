@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+    sandbox:
+      build: 
+        context: .
+        dockerfile: ./Dockerfile
+      ports: 
+        - 8088:8088
+      volumes:
+        - .:/go/src/wallet-sandbox
+      depends_on:
+        - db
+      environment:
+        DATABASE_HOST: db
+        DATABASE_PORT: 5432
+        POSTGRES_USER: sandbox-dev
+        POSTGRES_PASSWORD: dev
+        POSTGRES_DB: sandbox
+      restart: on-failure
+    
+    db:
+      image: postgres:latest
+      restart: always
+      environment:
+        HOST: 127.0.0.1 
+        POSTGRES_DB: sandbox
+        POSTGRES_USER: sandbox-dev
+        POSTGRES_PASSWORD: dev
+      ports:
+          - 5455:5432
