@@ -25,6 +25,7 @@ func (acc *Account) CreatedAtDate() string {
 }
 
 func Accounts(cxt context.Context) (accounts []Account, err error) {
+	accounts = []Account{}
 	stmt := "SELECT id, name, created_at FROM wallet_sandbox.accounts ORDER BY created_at DESC"
 	rows, err := DAO.conn.QueryContext(cxt, stmt)
 
