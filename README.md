@@ -23,7 +23,13 @@ That's it. In order to startup the server the database needs to be populated.
 To spin up the web and db containers use:
 
 ```bash
-$docker compose up
+$ docker compose up -d
+```
+
+To stop web and db containers use: 
+
+```bash
+$ docker compose stop
 ```
 
 ## Test 
