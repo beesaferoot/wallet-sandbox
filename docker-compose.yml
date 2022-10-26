@@ -29,3 +29,6 @@ services:
         POSTGRES_PASSWORD: dev
       ports:
           - 5455:5432
+      volumes:
+      # copy the sql script to create tables on db startup
+      - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
