@@ -6,6 +6,7 @@ import (
 	"wallet-sandbox/wallet"
 )
 
+
 func main() {
 	mux := utils.NewHTTPMultiplexer()
 	mux.POST("/account/create", wallet.CreateAccountHandler)
