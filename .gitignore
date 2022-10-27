@@ -6,3 +6,6 @@ bin
 
 # VSCode
 .vscode
+
+# env config 
+.env
